@@ -1,9 +1,12 @@
 {
   "name": "vnc-service",
   "version": "0.2.0",
-  "description": "Persistent virtual display + VNC for headless servers. Enables browser-based auth (OAuth, CAPTCHA, 2FA) on machines without a physical display.",
-  "author": "3D-Stories",
-  "skills": {
-    "auto_discover": true
-  }
+  "description": "Persistent virtual display + VNC for headless servers — OAuth, CAPTCHA, 2FA browser interactions.",
+  "author": {
+    "name": "3D-Stories",
+    "url": "https://github.com/3D-Stories"
+  },
+  "homepage": "https://github.com/3D-Stories/vnc-service",
+  "repository": "https://github.com/3D-Stories/vnc-service",
+  "license": "MIT"
 }
