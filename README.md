@@ -140,8 +140,8 @@ If no display detected:
 
 ## Security
 
-- VNC binds to **localhost only** (`-localhost` flag) — not directly accessible from the network
-- Access requires an **SSH tunnel**: `ssh -L 5999:localhost:5999 user@server`
+- VNC port 5999 is **restricted to the local network** via ufw firewall rules
+- If ufw is unavailable, consider SSH tunnel: `ssh -L 5999:localhost:5999 user@server`
 - VNC password stored in `~/.vnc/passwd` (obfuscated, chmod 600)
 - Services run as the current user, not root
 - `loginctl enable-linger` required for services to persist without login session
@@ -152,7 +152,7 @@ If no display detected:
 | Issue | Fix |
 |-------|-----|
 | "No X-Server detected" | Run `/vnc-service:run` to start the display |
-| VNC connection refused | Set up SSH tunnel first: `ssh -L 5999:localhost:5999 server` |
+| VNC connection refused | Check ufw allows your IP: `sudo ufw status` |
 | Display :99 locked | `/vnc-service:status` checks if PID is alive; removes stale locks |
 | Services don't survive reboot | Run `loginctl enable-linger $(whoami)` |
 | Services don't survive logout | Same — lingering must be enabled |

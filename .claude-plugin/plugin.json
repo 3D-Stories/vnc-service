@@ -1,6 +1,6 @@
 {
   "name": "vnc-service",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Persistent virtual display + VNC for headless servers \u2014 OAuth, CAPTCHA, 2FA browser interactions.",
   "author": {
     "name": "3D-Stories",

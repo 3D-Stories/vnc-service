@@ -9,7 +9,7 @@
     {
       "name": "vnc-service",
       "description": "Persistent virtual display + VNC for headless servers \u2014 OAuth, CAPTCHA, 2FA browser interactions.",
-      "version": "0.2.1",
+      "version": "0.2.2",
       "source": "./",
       "author": {
         "name": "3D-Stories",

@@ -121,7 +121,7 @@ chmod 600 ~/.vnc/passwd
 Display the password to the user:
 ```
 VNC Password: <generated password>
-Save this — you'll need it to connect via SSH tunnel from your PC.
+Save this — you'll need it to connect from your PC.
 ```
 
 ### Step 5: Create Systemd User Services
@@ -183,7 +183,7 @@ ExecStartPre=/bin/bash -c '\
     sleep 0.5; \
   done; \
   echo "Timed out waiting for display :99"; exit 1'
-ExecStart=/usr/bin/x11vnc -display :99 -rfbport 5999 -localhost -forever -shared -rfbauth %h/.vnc/passwd -o %h/.vnc/x11vnc.log
+ExecStart=/usr/bin/x11vnc -display :99 -rfbport 5999 -forever -shared -rfbauth %h/.vnc/passwd -o %h/.vnc/x11vnc.log
 Restart=on-failure
 RestartSec=5
 
@@ -197,7 +197,7 @@ WantedBy=default.target
   (fixes the race condition where x11vnc starts before Xvfb is initialized)
 - The lock file removal checks if the PID is alive before deleting
   (prevents killing another user's Xvfb instance)
-- VNC binds to **localhost only** (`-localhost` flag) for security — requires SSH tunnel to access
+- VNC binds to all interfaces — access is restricted by ufw firewall rules (Step 6b)
 - `Environment=DISPLAY=:99` ensures child processes inherit the display
 
 ### Step 6: Enable and Start
@@ -225,13 +225,38 @@ if ! loginctl enable-linger $(whoami) 2>/dev/null; then
 fi
 ```
 
+### Step 6b: Configure Firewall (ufw)
+
+Restrict VNC port to the local network only:
+
+```bash
+if command -v ufw >/dev/null 2>&1; then
+  # Auto-detect LAN subnet
+  LAN_CIDR=$(ip -4 addr show | grep 'inet ' | grep -v '127.0.0.1' | head -1 | awk '{print $2}' | sed 's|\.[0-9]*/|.0/|')
+
+  echo "Detected LAN: $LAN_CIDR"
+  echo "Configuring ufw to allow VNC (port 5999) from local network only..."
+
+  sudo ufw default deny incoming
+  sudo ufw default allow outgoing
+  sudo ufw allow from "$LAN_CIDR" to any port 5999 proto tcp
+  sudo ufw allow ssh
+  sudo ufw --force enable
+
+  echo "Firewall configured: port 5999 allowed from $LAN_CIDR only"
+else
+  echo "WARNING: ufw not available. Port 5999 is accessible from any network."
+  echo "Install ufw (sudo apt install ufw) or configure your firewall manually."
+fi
+```
+
 ### Step 7: Verify
 
 ```bash
 # Check Xvfb is running on :99
 DISPLAY=:99 xdpyinfo >/dev/null 2>&1 && echo "Display :99 OK" || echo "Display :99 FAILED"
 
-# Check VNC is listening on localhost:5999
+# Check VNC is listening on port 5999
 ss -tlnp | grep 5999 && echo "VNC port 5999 OK" || echo "VNC port 5999 FAILED"
 
 # Check services
@@ -249,14 +274,12 @@ SERVER_IP=$(hostname -I | awk '{print $1}')
 ```
 VNC Service Setup Complete
   Display:  :99
-  VNC Port: 5999 (localhost only — use SSH tunnel)
+  VNC Port: 5999
   Password: <shown above>
+  Firewall: port 5999 allowed from {LAN_CIDR} only (or "ufw not available" warning)
   Service:  virtual-display.service + vnc-server.service (enabled, starts on boot)
 
-To connect (SSH tunnel required):
-  1. From your PC: ssh -L 5999:localhost:5999 <user>@<server-ip>
-  2. Then connect VNC client to: localhost:5999
-
+To connect: Use any VNC client → <server-ip>:5999 (from local network)
 To use:     Set DISPLAY=:99 before running browser commands
 To check:   /vnc-service:status
 To stop:    /vnc-service:stop
@@ -276,8 +299,9 @@ To stop:    /vnc-service:stop
 
 ## Security Notes
 
-- VNC binds to **localhost only** (`-localhost`) — not accessible from the network directly
-- Access requires an SSH tunnel: `ssh -L 5999:localhost:5999 user@server`
+- VNC port 5999 is **restricted to the local network** via ufw firewall rules
+- If ufw is unavailable, VNC binds to all interfaces with password auth only — consider
+  adding firewall rules manually or using SSH tunnel: `ssh -L 5999:localhost:5999 user@server`
 - VNC password is stored in `~/.vnc/passwd` (VNC's obfuscated format, chmod 600)
 - The virtual display runs as the current user, not root
 - The Unix socket at `/tmp/.X11-unix/X99` is accessible to local users on the same machine.

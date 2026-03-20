@@ -4,7 +4,7 @@ description: >-
   Persistent virtual display + VNC for headless servers. Four commands: /vnc-service:setup (install
   and configure), /vnc-service:run (ensure running + print connection info), /vnc-service:stop
   (stop services to free resources), /vnc-service:status (check health). Requires Debian/Ubuntu,
-  systemd, sudo. VNC binds localhost only — SSH tunnel required for access. Use whenever browser
+  systemd, sudo. VNC access restricted to local network via ufw firewall. Use whenever browser
   interaction is needed on a headless server — OAuth, CAPTCHA, 2FA. Other skills should call
   /vnc-service:setup as a prerequisite check and /vnc-service:run before browser operations.
 ---
