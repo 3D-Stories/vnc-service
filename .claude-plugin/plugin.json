@@ -1,0 +1,9 @@
+{
+  "name": "vnc-service",
+  "version": "0.1.0",
+  "description": "Persistent virtual display + VNC for headless servers. Enables browser-based auth (OAuth, CAPTCHA, 2FA) on machines without a physical display.",
+  "author": "3D-Stories",
+  "skills": {
+    "auto_discover": true
+  }
+}
