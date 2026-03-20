@@ -1,6 +1,6 @@
 {
   "name": "vnc-service",
-  "description": "Persistent virtual display + VNC for headless servers — OAuth, CAPTCHA, 2FA browser interactions.",
+  "description": "Persistent virtual display + VNC for headless servers \u2014 OAuth, CAPTCHA, 2FA browser interactions.",
   "owner": {
     "name": "3D-Stories",
     "url": "https://github.com/3D-Stories"
@@ -8,8 +8,8 @@
   "plugins": [
     {
       "name": "vnc-service",
-      "description": "Persistent virtual display + VNC for headless servers — OAuth, CAPTCHA, 2FA browser interactions.",
-      "version": "0.2.0",
+      "description": "Persistent virtual display + VNC for headless servers \u2014 OAuth, CAPTCHA, 2FA browser interactions.",
+      "version": "0.2.1",
       "source": "./",
       "author": {
         "name": "3D-Stories",
