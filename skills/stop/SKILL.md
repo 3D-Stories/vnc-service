@@ -22,8 +22,17 @@ systemctl --user stop vnc-server.service virtual-display.service
 ### Step 2: Verify Stopped
 
 ```bash
-systemctl --user is-active virtual-display.service 2>/dev/null || echo "Display stopped"
-systemctl --user is-active vnc-server.service 2>/dev/null || echo "VNC stopped"
+if ! systemctl --user is-active virtual-display.service >/dev/null 2>&1; then
+  echo "Display stopped"
+else
+  echo "WARNING: Display is still running"
+fi
+
+if ! systemctl --user is-active vnc-server.service >/dev/null 2>&1; then
+  echo "VNC stopped"
+else
+  echo "WARNING: VNC is still running"
+fi
 ```
 
 ### Step 3: Optionally Disable Auto-Start
