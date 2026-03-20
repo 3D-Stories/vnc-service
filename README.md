@@ -42,6 +42,27 @@ Once set up, it starts on boot and runs permanently. Any tool that needs a brows
 /vnc-service:status   # Check health and diagnostics
 ```
 
+## Installation
+
+### From GitHub
+
+```
+/plugin marketplace add 3D-Stories/vnc-service
+/plugin install vnc-service@vnc-service
+/reload-plugins
+```
+
+### Updating
+
+If updating to a newer version:
+
+```
+/plugin marketplace remove vnc-service
+/plugin marketplace add 3D-Stories/vnc-service
+/plugin install vnc-service@vnc-service
+/reload-plugins
+```
+
 ## Commands
 
 ### `/vnc-service:setup`
