@@ -1,11 +1,11 @@
 ---
 name: vnc-service
 description: >-
-  Persistent virtual display + VNC for headless servers. Three commands: /vnc-service:setup (install
-  and configure), /vnc-service:run (ensure running + print connection info), /vnc-service:status
-  (check health). Use whenever browser interaction is needed on a headless server — OAuth, CAPTCHA,
-  2FA. Other skills should call /vnc-service:setup as a prerequisite check and /vnc-service:run
-  before browser operations.
+  Persistent virtual display + VNC for headless servers. Four commands: /vnc-service:setup (install
+  and configure), /vnc-service:run (ensure running + print connection info), /vnc-service:stop
+  (stop services to free resources), /vnc-service:status (check health). Use whenever browser
+  interaction is needed on a headless server — OAuth, CAPTCHA, 2FA. Other skills should call
+  /vnc-service:setup as a prerequisite check and /vnc-service:run before browser operations.
 ---
 
 # VNC Service Plugin
@@ -18,6 +18,7 @@ require a physical monitor.
 
 - `/vnc-service:setup` — One-time install and configuration
 - `/vnc-service:run` — Ensure running + print connection info (call before browser operations)
+- `/vnc-service:stop` — Stop services to free resources (restart anytime with /run)
 - `/vnc-service:status` — Health check and diagnostics
 
 ## For Other Skill Authors
