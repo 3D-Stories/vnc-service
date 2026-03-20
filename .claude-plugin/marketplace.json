@@ -1,8 +1,14 @@
 {
+  "name": "vnc-service",
+  "owner": {
+    "name": "3D-Stories",
+    "url": "https://github.com/3D-Stories"
+  },
   "plugins": [
     {
       "name": "vnc-service",
-      "path": "."
+      "source": ".",
+      "description": "Persistent virtual display + VNC for headless servers — OAuth, CAPTCHA, 2FA browser interactions"
     }
   ]
 }
